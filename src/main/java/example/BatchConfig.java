@@ -37,16 +37,19 @@ public class BatchConfig {
     // tag::readerwriterprocessor[]
     @Bean
     public FlatFileItemReader<BookingExtract> reader() {
-        return new FlatFileItemReaderBuilder<BookingExtract>()
+        
+     return new FlatFileItemReaderBuilder<BookingExtract>()
             .name("bookingExtractItemReader")
             .resource(new ClassPathResource("SpringBatchTest.csv"))
             .delimited()
             .names(new String[]{"street","city","zip","state","beds","baths","sqft","accomodationType","holidayDate","price","latitude","longitude"})
+            .linesToSkip(1)
             .fieldSetMapper(new BeanWrapperFieldSetMapper<BookingExtract>() {{
                 setTargetType(BookingExtract.class);
-               setStrict(false);
+               setStrict(false);               
             }})
             .build();
+        		
     }
 
 

@@ -1,28 +1,30 @@
 package example;
 
-
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 public class BookingExtract {
 	
-	private String id; 
+	private Integer id; 
 	private String street;
 	private String city;
-	private String zip;
+	private Integer zip;
 	private String state;
-	private String beds;
-	private String baths;
-	private String sqft;
+	private Integer beds;
+	private Integer baths;
+	private Integer sqft;
 	private String accomodationType;
 	private String holidayDate;
-	private String price;
-	private String latitude;
-	private String longitude;
+	private BigDecimal price;
+	private BigDecimal latitude;
+	private BigDecimal longitude;
 	
 	
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
@@ -43,10 +45,10 @@ public class BookingExtract {
 	}
 	
 
-	public String getZip() {
+	public Integer getZip() {
 		return zip;
 	}
-	public void setZip(String zip) {
+	public void setZip(Integer zip) {
 		this.zip = zip;
 	}
 	
@@ -59,26 +61,26 @@ public class BookingExtract {
 	}
 	
 
-	public String getBeds() {
+	public Integer getBeds() {
 		return beds;
 	}
-	public void setBeds(String beds) {
+	public void setBeds(Integer beds) {
 		this.beds = beds;
 	}
 	
 
-	public String getBaths() {
+	public Integer getBaths() {
 		return baths;
 	}
-	public void setBaths(String baths) {
+	public void setBaths(Integer baths) {
 		this.baths = baths;
 	}
 	
 
-	public String getSqft() {
+	public Integer getSqft() {
 		return sqft;
 	}
-	public void setSqft(String sqft) {
+	public void setSqft(Integer sqft) {
 		this.sqft = sqft;
 	}
 	
@@ -100,24 +102,24 @@ public class BookingExtract {
 	}
 	
 
-	public String getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
-	public void setPrice(String price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 	
-	public String getLatitude() {
+	public BigDecimal getLatitude() {
 		return latitude;
 	}
-	public void setLatitude(String latitude) {
+	public void setLatitude(BigDecimal latitude) {
 		this.latitude = latitude;
 	}
 	
-	public String getLongitude() {
+	public BigDecimal getLongitude() {
 		return longitude;
 	}
-	public void setLongitude(String longitude) {
+	public void setLongitude(BigDecimal longitude) {
 		this.longitude = longitude;
 	}
 }
