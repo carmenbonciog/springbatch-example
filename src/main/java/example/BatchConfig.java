@@ -42,6 +42,7 @@ public class BatchConfig {
             .name("bookingExtractItemReader")
             .resource(new ClassPathResource("SpringBatchTest.csv"))
             .delimited()
+            //.includedFields(new Integer[] {0,1,2,3,4,5,6,7})
             .names(new String[]{"street","city","zip","state","beds","baths","sqft","accomodationType","holidayDate","price","latitude","longitude"})
             .linesToSkip(1)
             .fieldSetMapper(new BeanWrapperFieldSetMapper<BookingExtract>() {{
@@ -51,8 +52,11 @@ public class BatchConfig {
             .build();
         		
     }
-
-
+/*   @Bean
+    public DelimitedLineTokenizer testDelimit () {
+    	
+    	return new DelimiteBuilder<>
+    }
 
     @Bean
     public JdbcBatchItemWriter<BookingExtract> writer(DataSource dataSource) {
@@ -61,16 +65,36 @@ public class BatchConfig {
             .sql("INSERT INTO BookingExtract (street,city,zip,state,beds,baths,sqft,accomodationType,holidayDate,price,latitude,longitude) VALUES (:street,:city,:zip,:state,:beds,:baths,:sqft,:accomodationType,:holidayDate,:price,:latitude,:longitude)")
             .dataSource(dataSource)
             .build();
+    }*/
+    
+    
+    @Bean
+    public JdbcBatchItemWriter<BookingExtract> writer(DataSource dataSource) {
+        return new JdbcBatchItemWriterBuilder<BookingExtract>()
+            .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
+            .sql("INSERT INTO BookingTest1 (street,city,zip,state,beds,baths,sqft) VALUES (:street,:city,:zip,:state,:beds,:baths,:sqft)")
+            .dataSource(dataSource)
+            .build();
+    }
+    
+    @Bean
+    public JdbcBatchItemWriter<BookingExtract> writer1(DataSource dataSource) {
+        return new JdbcBatchItemWriterBuilder<BookingExtract>()
+            .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
+            .sql("INSERT INTO BookingTest2 (accomodationType,holidayDate,price,latitude,longitude) VALUES (:accomodationType,:holidayDate,:price,:latitude,:longitude)")
+            .dataSource(dataSource)
+            .build();
     }
     // end::readerwriterprocessor[]
 
     // tag::jobstep[]
     @Bean
-    public Job importUserJob(JobCompletionNotificationListener listener, Step step1) {
+    public Job importUserJob(JobCompletionNotificationListener listener, Step step1, Step step2) {
         return jobBuilderFactory.get("importUserJob")
             .incrementer(new RunIdIncrementer())
             .listener(listener)
             .flow(step1)
+            .next(step2)
             .end()
             .build();
     }
@@ -81,6 +105,15 @@ public class BatchConfig {
             .<BookingExtract, BookingExtract> chunk(10)
             .reader(reader())
             .writer(writer)
+            .build();
+    }
+    
+    @Bean
+    public Step step2(JdbcBatchItemWriter<BookingExtract> writer1) {
+        return stepBuilderFactory.get("step2")
+            .<BookingExtract, BookingExtract> chunk(10)
+            .reader(reader())
+            .writer(writer1)
             .build();
     }
     // end::jobstep[]
